@@ -1,12 +1,8 @@
 import os
 from agency_swarm import Agent, Agency, set_openai_key
 from prompts import (
-    planner_description, 
-    planner_instructions, 
     researcher_description, 
     researcher_instructions,
-    reporter_description,
-    reporter_instructions,
     manager_description,
     manager_instructions,
     mission_statement_prompt
@@ -21,19 +17,10 @@ set_openai_key(OPENAI_API_KEY)
 
 manager = Agent(name="Manager",
             description= manager_description,
-            instructions= manager_instructions, # can be a file like ./instructions.md
-            # files_folder="./files", # files to be uploaded to OpenAI
-            # schemas_folder="./schemas", # OpenAPI schemas to be converted into tools
-            # tools=[MyCustomTool], 
-            temperature=0, # temperature for the agent
-            max_prompt_tokens=25000, # max tokens in conversation history
-            )
-
-planner = Agent(name="Planner",
-            description= planner_description,
-            instructions= planner_instructions,
+            instructions= manager_instructions,
             temperature=0,
-            max_prompt_tokens=25000, 
+            max_prompt_tokens=25000,
+            model="gpt-4o"
             )
 
 researcher = Agent(name="Researcher",
@@ -42,26 +29,16 @@ researcher = Agent(name="Researcher",
             tools=[SearchEngine, ScrapeWebsite], 
             temperature=0,
             max_prompt_tokens=25000,
+            model="gpt-4o"
             )
-
-
-reporter = Agent(name="Reporter",
-            description= reporter_description,
-            instructions= reporter_instructions,
-            temperature=0,
-            max_prompt_tokens=25000,
-            )
-
 
 agency = Agency([
        manager,
-       [manager, planner],
        [manager, researcher],
-       [manager, reporter],
      ], 
      shared_instructions= mission_statement_prompt,
      temperature=0,
-     max_prompt_tokens=25000
+     max_prompt_tokens=25000,
 )
 
 if __name__ == "__main__":

@@ -2,10 +2,10 @@
     {
         "id": "asst_auPSv2rjblkryJo1ykLxu0v8",
         "created_at": 1715880453,
-        "description": "You are a manager agent. You direct the actions of a team of agents including: \nPlanner, Researcher, and Reporter. You are responsible for coordinating the activities of these agents.",
-        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou direct your team of agents to complete research tasks. \nYou do this by providing feedback and guidance to the agents.\nYou assign tasks to the agents and review their work.\n",
+        "description": "You are a manager agent. You direct the actions of the researcher agent. You are responsible for creating plans and strategies, coordinating activities, and compiling the final response.",
+        "instructions": "You are a team of agents working together on research tasks.\nThe team consists of a manager and a researcher.\nThe manager creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe manager compiles the research and findings into a final response.\nYou must work together to complete the task at hand.\n\n\nYou create a comprehensive plan for the researcher to follow.\nYou begin by thinking step by step to comprehend the task at hand.\nYou come up with a logical plan to complete the task.\nYou direct the researcher agent to complete research tasks.\nYou provide feedback and guidance to the researcher.\nYou assign tasks to the researcher and review their work.\nYou compile the research and findings into a final response.\nYour final response MUST include citations and references to the sources used.\nYour answer should use the infomraion presented by the researcher.\n",
         "metadata": {},
-        "model": "gpt-4-turbo",
+        "model": "gpt-4o",
         "name": "Manager",
         "object": "assistant",
         "tools": [
@@ -16,10 +16,9 @@
                     "parameters": {
                         "$defs": {
                             "recipient": {
+                                "const": "Researcher",
                                 "enum": [
-                                    "Planner",
-                                    "Researcher",
-                                    "Reporter"
+                                    "Researcher"
                                 ],
                                 "title": "recipient",
                                 "type": "string"
@@ -37,7 +36,7 @@
                                         "$ref": "#/$defs/recipient"
                                     }
                                 ],
-                                "description": "Planner: You are a planning agent responsible for creating plans and strategies for the team.\nResearcher: You are a researcher agent. You are responsible for conducting research tasks.\nReporter: You provide a final response to the task.\n"
+                                "description": "Researcher: You are a researcher agent. You are responsible for conducting research tasks.\n"
                             },
                             "message": {
                                 "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
@@ -94,7 +93,7 @@
         "id": "asst_5CPfA6VR7FEeLiKjeidW3hUE",
         "created_at": 1715880454,
         "description": "You are a planning agent responsible for creating plans and strategies for the team.",
-        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou must create a comprehensive plan for the researcher to follow.\nYou begin by thinking step by step to comprehend the task at hand.\nYou come up with a logical plan to complete the task.\n",
+        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner and a researcher.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe manager compiles the research and findings into a final response.\nYou must work together to complete the task at hand.\n\n\nYou must create a comprehensive plan for the researcher to follow.\nYou begin by thinking step by step to comprehend the task at hand.\nYou come up with a logical plan to complete the task.\n",
         "metadata": {},
         "model": "gpt-4-turbo",
         "name": "Planner",
@@ -112,16 +111,16 @@
         "id": "asst_QZgWyxr66ZYscoUXVmgS2Vox",
         "created_at": 1715880454,
         "description": "You are a researcher agent. You are responsible for conducting research tasks.",
-        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou use the tools available to you and the plan provided by the planner to conduct research.\nYou must provide the sources to all the information you find.\n",
+        "instructions": "You are a team of agents working together on research tasks.\nThe team consists of a manager and a researcher.\nThe manager creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe manager compiles the research and findings into a final response.\nYou must work together to complete the task at hand.\n\n\nYou use the tools available to you and the plan provided by the manager to conduct research.\nYou must provide the sources to all the information you find.\nYou can use the search SearchEngine tool to search for information on the web.\nYou can use the ScrapeWebsite tool to scrape content from a website.\n",
         "metadata": {},
-        "model": "gpt-4-turbo",
+        "model": "gpt-4o",
         "name": "Researcher",
         "object": "assistant",
         "tools": [
             {
                 "function": {
                     "name": "SearchEngine",
-                    "description": "SearchEngine: A search engine tool. You can use this tool to search for a specific query on a search engine.",
+                    "description": "SearchEngine: A search engine tool. You can use this tool to search for a specific query on a search engine.\nThe output of the search engine is a dictionary where the key is the source of the information and the value is the content.",
                     "parameters": {
                         "properties": {
                             "search_engine_query": {

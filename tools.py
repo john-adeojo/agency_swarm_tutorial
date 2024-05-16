@@ -11,6 +11,7 @@ load_config(file_path="./config.yaml")
 class SearchEngine(BaseTool):
     """
     SearchEngine: A search engine tool. You can use this tool to search for a specific query on a search engine.
+    The output of the search engine is a dictionary where the key is the source of the information and the value is the content.
     """
     search_engine_query: str = Field(
         ..., description= "Search engine query to be executed by the tool"
@@ -90,6 +91,8 @@ class ScrapeWebsite(BaseTool):
             text = soup.get_text(separator='\n')
             # Cleaning up the text: removing excess whitespace
             clean_text = '\n'.join([line.strip() for line in text.splitlines() if line.strip()])
+
+            print(f"Successfully scraped content from {self.website_url}")
 
             return {self.website_url: clean_text}
 
