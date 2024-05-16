@@ -1,0 +1,188 @@
+[
+    {
+        "id": "asst_auPSv2rjblkryJo1ykLxu0v8",
+        "created_at": 1715880453,
+        "description": "You are a manager agent. You direct the actions of a team of agents including: \nPlanner, Researcher, and Reporter. You are responsible for coordinating the activities of these agents.",
+        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou direct your team of agents to complete research tasks. \nYou do this by providing feedback and guidance to the agents.\nYou assign tasks to the agents and review their work.\n",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "Manager",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "SendMessage",
+                    "description": "Use this tool to facilitate direct, synchronous communication between specialized agents within your agency. When you send a message using this tool, you receive a response exclusively from the designated recipient agent. To continue the dialogue, invoke this tool again with the desired recipient agent and your follow-up message. Remember, communication here is synchronous; the recipient agent won't perform any tasks post-response. You are responsible for relaying the recipient agent's responses back to the user, as the user does not have direct access to these replies. Keep engaging with the tool for continuous interaction until the task is fully resolved. Do not send more than 1 message at a time.",
+                    "parameters": {
+                        "$defs": {
+                            "recipient": {
+                                "enum": [
+                                    "Planner",
+                                    "Researcher",
+                                    "Reporter"
+                                ],
+                                "title": "recipient",
+                                "type": "string"
+                            }
+                        },
+                        "properties": {
+                            "my_primary_instructions": {
+                                "description": "Please repeat your primary instructions step-by-step, including both completed and the following next steps that you need to perfrom. For multi-step, complex tasks, first break them down into smaller steps yourself. Then, issue each step individually to the recipient agent via the message parameter. Each identified step should be sent in separate message. Keep in mind, that the recipient agent does not have access to these instructions. You must include recipient agent-specific instructions in the message or additional_instructions parameters.",
+                                "title": "My Primary Instructions",
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "allOf": [
+                                    {
+                                        "$ref": "#/$defs/recipient"
+                                    }
+                                ],
+                                "description": "Planner: You are a planning agent responsible for creating plans and strategies for the team.\nResearcher: You are a researcher agent. You are responsible for conducting research tasks.\nReporter: You provide a final response to the task.\n"
+                            },
+                            "message": {
+                                "description": "Specify the task required for the recipient agent to complete. Focus on clarifying what the task entails, rather than providing exact instructions.",
+                                "title": "Message",
+                                "type": "string"
+                            },
+                            "message_files": {
+                                "anyOf": [
+                                    {
+                                        "items": {
+                                            "type": "string"
+                                        },
+                                        "type": "array"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ],
+                                "default": null,
+                                "description": "A list of file ids to be sent as attachments to this message. Only use this if you have the file id that starts with 'file-'.",
+                                "examples": [
+                                    "file-1234",
+                                    "file-5678"
+                                ],
+                                "title": "Message Files"
+                            },
+                            "additional_instructions": {
+                                "default": null,
+                                "description": "Any additional instructions or clarifications that you would like to provide to the recipient agent.",
+                                "title": "Additional Instructions",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "message",
+                            "my_primary_instructions",
+                            "recipient"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.0,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_5CPfA6VR7FEeLiKjeidW3hUE",
+        "created_at": 1715880454,
+        "description": "You are a planning agent responsible for creating plans and strategies for the team.",
+        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou must create a comprehensive plan for the researcher to follow.\nYou begin by thinking step by step to comprehend the task at hand.\nYou come up with a logical plan to complete the task.\n",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "Planner",
+        "object": "assistant",
+        "tools": [],
+        "response_format": "auto",
+        "temperature": 0.0,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_QZgWyxr66ZYscoUXVmgS2Vox",
+        "created_at": 1715880454,
+        "description": "You are a researcher agent. You are responsible for conducting research tasks.",
+        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou use the tools available to you and the plan provided by the planner to conduct research.\nYou must provide the sources to all the information you find.\n",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "Researcher",
+        "object": "assistant",
+        "tools": [
+            {
+                "function": {
+                    "name": "SearchEngine",
+                    "description": "SearchEngine: A search engine tool. You can use this tool to search for a specific query on a search engine.",
+                    "parameters": {
+                        "properties": {
+                            "search_engine_query": {
+                                "description": "Search engine query to be executed by the tool",
+                                "title": "Search Engine Query",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "search_engine_query"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            },
+            {
+                "function": {
+                    "name": "ScrapeWebsite",
+                    "description": "ScrapeWebsite: A website scraping tool. You can use this tool to scrape the content of a website.\nYou must provide the URL of the website you want to scrape.",
+                    "parameters": {
+                        "properties": {
+                            "website_url": {
+                                "description": "The URL of the website to scrape the content from.",
+                                "title": "Website Url",
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "website_url"
+                        ],
+                        "type": "object"
+                    }
+                },
+                "type": "function"
+            }
+        ],
+        "response_format": "auto",
+        "temperature": 0.0,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    },
+    {
+        "id": "asst_z4CXAjXLqi5muJpNHOzkFwAq",
+        "created_at": 1715880454,
+        "description": "You provide a final response to the task.",
+        "instructions": "You are a team of agents working together on research tasks.\nYou are led by a manager who directs the activities of the team.\nThe team consists of a planner, a researcher, and a reporter.\nThe planner creates a plan for the researcher to follow.\nThe researcher conducts research using the tools available.\nThe reporter compiles the research into a final response.\nYou must work together to complete the task at hand.\n\n\nYou compile the research and findings into a final response.\nYour response must include citations and references to the sources you used.\n",
+        "metadata": {},
+        "model": "gpt-4-turbo",
+        "name": "Reporter",
+        "object": "assistant",
+        "tools": [],
+        "response_format": "auto",
+        "temperature": 0.0,
+        "tool_resources": {
+            "code_interpreter": null,
+            "file_search": null
+        },
+        "top_p": 1.0
+    }
+]
