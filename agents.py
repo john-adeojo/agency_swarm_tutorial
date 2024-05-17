@@ -1,4 +1,5 @@
 import os
+from datetime import datetime, timezone
 from agency_swarm import Agent, Agency, set_openai_key
 from prompts import (
     researcher_description, 
@@ -15,6 +16,15 @@ load_config(file_path="./config.yaml")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 set_openai_key(OPENAI_API_KEY)
 
+
+def get_current_utc_datetime():
+    # Get the current date and time in UTC
+    now_utc = datetime.now(timezone.utc)
+    # Format the date and time as a string
+    current_time_utc = now_utc.strftime("%Y-%m-%d %H:%M:%S %Z")
+    return current_time_utc
+
+manager_instructions_with_datetime = manager_instructions.format(datetime=get_current_utc_datetime())
 manager = Agent(name="Manager",
             description= manager_description,
             instructions= manager_instructions,
