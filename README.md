@@ -1,5 +1,5 @@
 
-# Setting Up and Running Custom Agent Script
+# Setting Up Agency Swarm Script
 
 ### Prerequisites
 1. **Install Anaconda:**  
