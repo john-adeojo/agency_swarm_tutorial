@@ -18,9 +18,7 @@ set_openai_key(OPENAI_API_KEY)
 
 
 def get_current_utc_datetime():
-    # Get the current date and time in UTC
     now_utc = datetime.now(timezone.utc)
-    # Format the date and time as a string
     current_time_utc = now_utc.strftime("%Y-%m-%d %H:%M:%S %Z")
     return current_time_utc
 
@@ -29,7 +27,7 @@ manager = Agent(name="Manager",
             description= manager_description,
             instructions= manager_instructions,
             temperature=0,
-            max_prompt_tokens=25000,
+            # max_prompt_tokens=25000,
             model="gpt-4o"
             )
 
@@ -38,7 +36,6 @@ researcher = Agent(name="Researcher",
             instructions= researcher_instructions,
             tools=[SearchEngine, ScrapeWebsite], 
             temperature=0,
-            max_prompt_tokens=25000,
             model="gpt-4o"
             )
 
@@ -48,7 +45,6 @@ agency = Agency([
      ], 
      shared_instructions= mission_statement_prompt,
      temperature=0,
-     max_prompt_tokens=25000,
 )
 
 if __name__ == "__main__":
